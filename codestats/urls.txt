@@ -1,0 +1,11 @@
+https://github.com/confidential-containers/enclave-cc
+https://github.com/confidential-containers/image-rs
+https://github.com/confidential-containers/attestation-agent
+https://github.com/confidential-containers/attestation-service
+https://github.com/confidential-containers/kbs
+https://github.com/confidential-containers/operator
+https://github.com/confidential-containers/simple-kbs
+https://github.com/confidential-containers/td-shim
+https://github.com/confidential-containers/ocicrypt-rs
+https://github.com/inclavare-containers/librats
+https://github.com/inclavare-containers/rats-tls

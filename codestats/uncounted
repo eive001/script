@@ -1,0 +1,11 @@
+------enclave-cc
+------image-rs
+------attestation-agent
+------attestation-service
+------kbs
+------operator
+------simple-kbs
+------td-shim
+------ocicrypt-rs
+------librats
+------rats-tls
