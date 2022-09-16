@@ -1,0 +1,70 @@
+{
+   "binary" : [
+      {
+         "checksum" : {
+            "md5" : " ",
+            "sha1" : " ",
+            "sha256" : " "
+         },
+         "url" : "./src/agent/target/x86_64-unknown-linux-musl/release/kata-agent"
+      }
+   ],
+   "command" : [
+      "mkdir code",
+      "cd code",
+      "export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt",
+      "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y  --no-modify-path",
+      "source \"$HOME/.cargo/env\"",
+      "rustup install 1.53.0 && rustup target add x86_64-unknown-linux-musl",
+      "git clone https://github.com/kata-containers/kata-containers.git",
+      "cd  kata-containers/src/agent",
+      "./dettrace --base-env host -- make",
+      "shasum /home/code/kata-containers/src/agent/target/x86_64-unknown-linux-musl/release/kata-agent >>checksum.txt",
+      "sha256sum /home/code/kata-containers/src/agent/target/x86_64-unknown-linux-musl/release/kata-agent >>checksum.txt",
+      "md5sum /home/code/kata-containers/src/agent/target/x86_64-unknown-linux-musl/release/kata-agent >>checksum.txt"
+   ],
+   "config" : {
+      "version_gf" : "0.1"
+   },
+   "dependency" : [
+      // search version in apt : apt-cache madison package-name
+      {
+         "source_dep" : "make",
+         "version_dep" : "4.3-4.1build1"
+      },
+      {
+         "source_dep" : "git",
+         "version_dep" : "1:2.34.1-1ubuntu1"
+      },
+      {
+         //7.81.0-1ubuntu1.3
+         "source_dep" : "curl",
+         "version_dep" : "7.81.0-1ubuntu1.3"
+
+      },
+      {
+         "source_dep" : "curl",
+         "version_dep" : "7.81.0-1ubuntu1.3"
+      },
+      {
+         "source_dep" : "libseccomp-dev",
+         "version_dep" : "2.5.3-2ubuntu2"
+      },
+      {
+         "source_dep" : "gcc",
+         "version_dep" : "4:11.2.0-1ubuntu1"
+      }
+   ],
+   "environment" : {
+      "architecture" : "x86-64",
+      "kernel_version" : "5.0"
+   },
+   "name" : "kata-agent",
+   "source" : {
+      "sourceLink" : "https://github.com/kata-containers/kata-containers.git",
+      "sourceType" : "git"
+   },
+   "timestamp" : "1234567890",
+   "version" : "1.0"
+}
+
