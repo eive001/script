@@ -258,6 +258,15 @@ public:
    */
   uint64_t getSystemCallNumber();
 
+/**
+*add in 2022.10.10 for debug ,display each reg. after a syscall
+* @author  Yishang.Zhang@linux.alibaba.com
+*
+*/
+void displayRegs();
+
+
+
   /**
    * Wrapper around PTRACE_GETEVENTMSG for our current tracee.
    * @return Event message

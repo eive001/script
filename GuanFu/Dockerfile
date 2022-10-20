@@ -57,11 +57,12 @@ RUN cd json && make
 # Copy only the deployment files into the final image:
 FROM ubuntu:18.04
 ADD sources.list /etc/apt/
+ADD motd /etc/motd
 RUN apt-get update -y && apt-get install -y python3 bsdmainutils dnsutils curl
 
 COPY --from=0 /code/*.deb /root/
 COPY --from=0 /code/json/share /home/rebuild
 RUN dpkg --install /root/*.deb
-# ADD config /root/.cargo/
+#ADD config /root/.cargo/
 
 RUN echo 'export PS1="\w \[\033[1;36m\]$ \[\033[0m\]"' >> /root/.bashrc

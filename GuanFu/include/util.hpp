@@ -117,7 +117,6 @@ void writeVmTraceeRaw(
   doWithCheck(
       process_vm_writev(traceePid, &localIoVec, 1, &remoteIoVec, 1, flags),
       "writeVmTraceeRaw: Error calling process_vm_writev");
-
   return;
 }
 

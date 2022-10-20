@@ -99,7 +99,7 @@ void arch_prctlSystemCall::handleDetPost(
   if (0 != t.getReturnValue()) {
     string errmsg("cpuid interception (cpuid_fault) via arch_prctl failed: ");
     errmsg += strerror(-t.getReturnValue());
-    errmsg += "\nPlease check `cpuid_fault` flag from `cat /proc/cpuinfo`";
+    errmsg += "\nPlease check `cpuid_fault` flag from `cat /proc/cpuinfo`\n";
     gs.log.writeToLog(Importance::inter, errmsg);
     gs.allow_trapCPUID = false;
   } else {
@@ -608,6 +608,29 @@ void lchownSystemCall::handleDetPost(
   runtimeError("fchownat post hook shold never be called.");
   return;
 }
+// =======================================================================================
+// add statx system call in 22.10.19
+
+bool statxSystemCall::handleDetPre(
+    globalState& gs, state& s, ptracer& t, scheduler& sched) {
+      fprintf(stdout,"begin ==========================  =   pre");
+  t.displayRegs();
+      fprintf(stdout,"end ==========================  =   pre");
+  return true;
+}
+
+void statxSystemCall::handleDetPost(
+    globalState& gs, state& s, ptracer& t, scheduler& sched) {
+       fprintf(stdout,"begin ==========================  =   post");
+  t.displayRegs();
+       fprintf(stdout,"end ==========================  =   post");
+  return;
+}
+
+
+
+
+
 // =======================================================================================
 bool fcntlSystemCall::handleDetPre(
     globalState& gs, state& s, ptracer& t, scheduler& sched) {
@@ -1349,54 +1372,6 @@ void newfstatatSystemCall::handleDetPost(
 
   return;
 }
-//add statx fun 
-bool statxSystemCall::handleDetPre(
-    globalState& gs, state& s, ptracer& t, scheduler& sched) {
-  return true;
-}
-
-void statxSystemCall::handleDetPost(
-    globalState& gs, state& s, ptracer& t, scheduler& sched) {
-
-    
-      
-  // printInfoString(t.arg2(), gs.log, s.traceePid, t);
-
-  // This newfstatat was injected to get the inode belonging to a file that was
-  // deleted through: unlink, unlinkat, or rmdir.
-  
-  if (s.syscallInjected) {
-   // gs.log.writeToLog(Importance::info, "This newfstatat was injected.\n");
-    s.syscallInjected = false;
-
-    if (t.getReturnValue() >= 0) {
-      struct statx* statxbufPtr = (struct statx*)t.arg3();
-      struct statx statxbuf =
-          t.readFromTracee(traceePtr<struct statx>(statxbufPtr), s.traceePid);
-
-
-       s.inodeToDelete = statxbuf.stx_ino;
-    } else {
-      gs.log.writeToLog(Importance::info, "No such file, that's okay.\n");
-      s.inodeToDelete = -1;
-    }
-
-    // We got what we wanted. The inode that matches the file called from either
-    // unlink, unlinkat, or rmdir. Now replay that system call as we did not let
-    // it though.
-    t.setRegs(s.regSaver.popRegisterState());
-    replaySystemCall(gs, t, t.getSystemCallNumber());
-    s.firstTrySystemcall = false;
-  } else {
-    handleStatFamily(gs, s, t, "statx");
-   }
-  
-  return;
-}
-
-
-
-
 // =======================================================================================
 bool lstatSystemCall::handleDetPre(
     globalState& gs, state& s, ptracer& t, scheduler& sched) {

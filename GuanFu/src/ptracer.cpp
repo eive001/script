@@ -66,6 +66,17 @@ int ptracer::getReturnValue() { return (int)regs.rax; }
 
 uint64_t ptracer::getSystemCallNumber() { return regs.orig_rax; }
 
+void ptracer::displayRegs(){
+  user_regs_struct myRegs = regs;
+  fprintf(stdout,"r15 = %llu;\t r14 = %llu;\t r13 = %llu; \t r12 = %llu; \n",myRegs.r15,myRegs.r14,myRegs.r13,myRegs.r12);
+  fprintf(stdout,"bp = %llu;\t bx = %llu;\t r11 = %llu; \t r10 = %llu;\t r9 = %llu;\t r8 = %llu; \n",myRegs.rbp,myRegs.rbx,myRegs.r11,myRegs.r10,myRegs.r9,myRegs.r8);
+  fprintf(stdout,"ax = %llu;\t cx = %llu;\t dx = %llu; \t si = %llu; \n",myRegs.rax,myRegs.rcx,myRegs.rdx,myRegs.rsi);
+  fprintf(stdout,"di = %llu;\t orig_ax = %llu;\t ip = %llu; \t cs = %llu; \n",myRegs.rdi,myRegs.orig_rax,myRegs.rip,myRegs.cs);
+  fprintf(stdout,"flags = %llu;\t sp = %llu;\t ss = %llu; \t fs_base = %llu;\t gs_base = %llu; \n",myRegs.eflags,myRegs.rsp,myRegs.ss,myRegs.fs_base,myRegs.gs_base);
+  fprintf(stdout,"ds = %llu;\t es = %llu;\t fs = %llu; \t gs = %llu; \n",myRegs.ds,myRegs.es,myRegs.fs,myRegs.gs);
+
+  };
+
 void ptracer::setReturnRegister(uint64_t retVal) {
   regs.rax = retVal;
   // Please note how the memory address is passed in data argument here.

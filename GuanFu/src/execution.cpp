@@ -63,7 +63,7 @@ execution::execution(
     SysEnter sys_enter_hook,
     SysExit sys_exit_hook,
     void* user_data)
-    : kernelPre4_8{kernelCheck(4, 8, 0)},
+    : kernelPre4_8{kernelCheck(4, 8, 0)},        // 这里冒号 对类成员初始化
       log{logFile, debugLevel, useColor},
       silentLogger{"", 0},
       printStatistics{printStatistics},
@@ -86,7 +86,7 @@ execution::execution(
       user_data(user_data) {
   // Set state for first process.
   states.emplace(
-      startingPid, state{startingPid, debugLevel, epoch, clock_step});
+      startingPid, state{startingPid, debugLevel, epoch, clock_step}); //insert new state
   myGlobalState.threadGroups.insert({startingPid, startingPid});
   myGlobalState.threadGroupNumber.insert({startingPid, startingPid});
 
@@ -283,14 +283,21 @@ int execution::runProgram() {
 
   // Iterate over entire process' and all subprocess' execution.
   while (!exitLoop) {
+
+   
     int status;
     pid_t traceesPid;
     ptraceEvent ret;
 
     pid_t nextPid = myScheduler.getNext();
+      log.writeToLog(
+          Importance::debug,log.makeTextColored(Color::yellow, "=====================this is a new instruction ===================\n") );
+     
+
     bool post = states.at(nextPid).callPostHook;
     tie(ret, traceesPid, status) = getNextEvent(nextPid, post);
-
+ log.writeToLog(
+          Importance::debug,">>>>>>>>>>>>>>>>>>the pid is  <<>> %d <<< and the ret is %d <<<<<<<<\n",nextPid,ret);
     // Most common event. We handle the pre-hook for system calls here.
     if (ret == ptraceEvent::seccomp) {
       log.writeToLog(Importance::extra, "Is seccomp event!\n");
@@ -322,7 +329,6 @@ int execution::runProgram() {
         // set callPostHook to default value for next iteration.
         states.at(traceesPid).callPostHook = false;
       }
-
       continue;
     }
 
@@ -825,7 +831,9 @@ bool execution::handleSeccomp(const pid_t traceesPid) {
   //     myErrorMessage("and the name is  "+ systemCallMappings[syscallNum]);
     
   // }
-    
+
+    //  log.writeToLog(
+    //       Importance::debug,log.makeTextColored(Color::yellow, "systemCall is " + systemCallMappings[syscallNum]) +"\n");
   
   if (syscallNum == INT16_MAX) {
     // Fetch real system call from register.
@@ -840,7 +848,7 @@ bool execution::handleSeccomp(const pid_t traceesPid) {
           to_string(syscallNum));
     }
   }
-
+//   如果不等会怎么样
   // TODO: Right now we update this information on every exit and entrance, as a
   // small optimization we might not want to...
   // Get registers from tracee.
@@ -1009,7 +1017,16 @@ bool execution::callPreHook(
     state& s,
     ptracer& t,
     scheduler& sched) {
+     log.writeToLog(
+          Importance::debug,log.makeTextColored(Color::yellow, "this is a pre hook\n") );
+     
+
+
   switch (syscallNumber) {
+
+  case SYS_statx:
+    return statxSystemCall::handleDetPre(gs, s, t, sched);
+
   case SYS_access:
     return accessSystemCall::handleDetPre(gs, s, t, sched);
 
@@ -1271,9 +1288,6 @@ bool execution::callPreHook(
   case SYS_timer_create:
     return timer_createSystemCall::handleDetPre(gs, s, t, sched);
 
-  case SYS_statx:
-    return statxSystemCall::handleDetPre(gs, s, t, sched);
-
 
   case SYS_timer_delete:
     return timer_deleteSystemCall::handleDetPre(gs, s, t, sched);
@@ -1357,7 +1371,12 @@ void execution::callPostHook(
     state& s,
     ptracer& t,
     scheduler& sched) {
+           log.writeToLog(
+          Importance::debug,log.makeTextColored(Color::yellow, "this is a post hook\n") );
   switch (syscallNumber) {
+
+case SYS_statx:
+    return statxSystemCall::handleDetPost(gs, s, t, sched);
   case SYS_access:
     return accessSystemCall::handleDetPost(gs, s, t, sched);
 
@@ -1493,9 +1512,6 @@ void execution::callPostHook(
   case SYS_lstat:
     return lstatSystemCall::handleDetPost(gs, s, t, sched);
 
-  case SYS_statx:
-    return statxSystemCall::handleDetPost(gs, s, t, sched);
-          
           
   case SYS_link:
     return linkSystemCall::handleDetPost(gs, s, t, sched);
@@ -1807,12 +1823,12 @@ ptraceEvent execution::getPtraceEvent(const int status) {
 
   // This is a stop caused by a system call exit-post.
   // All pre events are caught by seccomp.
-  if (WIFSTOPPED(status) && (WSTOPSIG(status) == (SIGTRAP | 0x80))) {
+  if (WIFSTOPPED(status) && (WSTOPSIG(status) == (SIGTRAP | 0x80))) { //子进程被暂停了
     return ptraceEvent::syscall;
   }
 
   // Check if tracee has exited.
-  if (WIFEXITED(status)) {
+  if (WIFEXITED(status)) {   // 子进程正常推出
     log.writeToLog(Importance::extra, "nonEventExit\n");
     exit_code = WEXITSTATUS(status);
     return ptraceEvent::nonEventExit;
@@ -1904,13 +1920,14 @@ void trapCPUID(globalState& gs, state& s, ptracer& t) {
   // Call arch_prctl
   t.writeArg1(ARCH_SET_CPUID);
   t.writeArg2(0);
-
+//大概就是通过process_vm_readv 从远程读数据
   uint16_t minus2 = t.readFromTracee(
       traceePtr<uint16_t>((uint16_t*)((uint64_t)t.getRip().ptr - 2)),
-      t.getPid());
-  if (!(minus2 == 0x80CD || minus2 == 0x340F || minus2 == 0x050F)) {
+      t.getPid());//1000000011001101  //11010000001111  //
+  if (!(minus2 == 0x80CD || minus2 == 0x340F || minus2 == 0x050F)) { //为什么这几个返回值
     runtimeError("IP does not point to system call instruction!\n");
   }
+
 
   gs.totalReplays++;
   // Replay system call!

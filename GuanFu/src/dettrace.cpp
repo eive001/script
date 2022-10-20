@@ -149,6 +149,17 @@ static pid_t _dettrace(const TraceOptions* opts) {
   const int STACK_SIZE(1024 * 4096);
   static char child_stack[STACK_SIZE]; /* Space for child's stack */
 
+// Set the calling thread's no_new_privs attribute to the
+//               value in arg2.  With no_new_privs set to 1, execve(2)
+//               promises not to grant privileges to do anything that could
+//               not have been done without the execve(2) call (for
+//               example, rendering the set-user-ID and set-group-ID mode
+//               bits, and file capabilities non-functional).  Once set,
+//               the no_new_privs attribute cannot be unset.  The setting
+//               of this attribute is inherited by children created by
+//               fork(2) and clone(2), and preserved across execve(2).
+
+
   doWithCheck(
       prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0),
       "Pre-clone prctl error: setting no new privs");
@@ -244,11 +255,50 @@ static int _dettrace_child(const CloneArgs* clone_args) {
       errmsg += "\n";
       runtimeError(errmsg);
     }
+
+
   }
 
   int pipefds[2];
 
   doWithCheck(pipe2(pipefds, O_CLOEXEC), "spawnTracerTracee pipe2 failed");
+
+// The mkstemp() function generates a unique temporary filename from
+//        template, creates and opens the file, and returns an open file
+//        descriptor for the file.
+
+//        The last six characters of template must be "XXXXXX" and these
+//        are replaced with a string that makes the filename unique.  Since
+//        it will be modified, template must not be a string constant, but
+//        should be declared as a character array.
+
+//        The file is created with permissions 0600, that is, read plus
+//        write for owner only.  The returned file descriptor provides both
+//        read and write access to the file.  The file is opened with the
+//        open(2) O_EXCL flag, guaranteeing that the caller is the process
+//        that creates the file.
+
+//        The mkostemp() function is like mkstemp(), with the difference
+//        that the following bits—with the same meaning as for open(2)—may
+//        be specified in flags: O_APPEND, O_CLOEXEC, and O_SYNC.  Note
+//        that when creating the file, mkostemp() includes the values
+//        O_RDWR, O_CREAT, and O_EXCL in the flags argument given to
+//        open(2); including these values in the flags argument given to
+//        mkostemp() is unnecessary, and produces errors on some systems.
+
+//        The mkstemps() function is like mkstemp(), except that the string
+//        in template contains a suffix of suffixlen characters.  Thus,
+//        template is of the form prefixXXXXXXsuffix, and the string XXXXXX
+//        is modified as for mkstemp().
+
+//        The mkostemps() function is to mkstemps() as mkostemp() is to
+//        mkstemp().
+
+
+
+
+
+
 
   // Create fifo files for /dev/random and /dev/urandom. We can't use the normal
   // C++ish way because we need to avoid any allocations before the `fork()`
@@ -346,6 +396,7 @@ static int _dettrace_child(const CloneArgs* clone_args) {
     doWithCheck(sigemptyset(&sa.sa_mask), "sigemptyset");
     sa.sa_flags = 0;
     doWithCheck(sigaction(SIGALRM, &sa, NULL), "sigaction(SIGALRM)");
+    fprintf(stdout,"[--]alarm (opts->timeout) is %d\n",opts->timeout);
     alarm(opts->timeout);
 
     int exit_code = exe.runProgram();
@@ -490,7 +541,7 @@ static int runTracee(
   // Stop ourselves until the tracer is ready. This ensures the tracer has time
   // to get set up.
   raise(SIGSTOP);
-
+  //fprintf(stdout, "INFO: 子进程呼叫父进程\n");
   myFilter.loadFilterToKernel();
 
   // execvpe() duplicates the actions of the shell in searching for an

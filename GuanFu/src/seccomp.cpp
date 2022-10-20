@@ -215,7 +215,8 @@ void seccomp::loadRules(bool debug, bool convertUids) {
   
   
   //if unreproducible modify these intercept ;
-  noIntercept(SYS_statx);
+  //noIntercept(SYS_statx);
+  intercept(SYS_statx);
   noIntercept(SYS_kill);
   noIntercept(SYS_copy_file_range);
   noIntercept(SYS_restart_syscall);

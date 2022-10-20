@@ -39,6 +39,7 @@ logger::logger(string logFile, int debugLevel, bool useColor)
   }
 
   padding = false;
+  logPrintfFormattingEnabled = true;
 
   return;
 }
@@ -93,6 +94,9 @@ void logger::writeToLog(Importance imp, std::string format, ...) {
     case Importance::info:
       fprintf(fin, "[4]INFO  "); // Extra space for correct alignment.
       break;
+    case Importance::debug:
+      fprintf(fin, "[2]DEBUG  "); // Extra space for correct alignment.
+      break;
     case Importance::inter:
       fprintf(fin, "[3]INTER ");
       break;
@@ -146,6 +150,10 @@ string logger::makeTextColored(Color color, string text) {
   case Color::blue:
     colorCode = "\033[1;34m";
     break;
+  case Color::yellow:
+    colorCode = "\033[1;33m";
+    break;
+
   default:
     runtimeError("Unkown color! Please add color code.");
   }

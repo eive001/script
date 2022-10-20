@@ -1,19 +1,19 @@
 {
    "binary" : {
       "checksum" : {
-         "md5" : "92841e159ff2de31e1664817606b07a5",
-         "sha1" : "8e0996c18445f2b082cd901db4da00569f5273df",
-         "sha256" : "0d3ba3a7eaacb75e70904707a6be80b29cf344cf8f116a17b4ea938c95d2a703"
+         "md5" : "",
+         "sha1" : "",
+         "sha256" : ""
       },
       "url" : "/kata-containers/src/agent/target/x86_64-unknown-linux-musl/release/kata-agent"
    },
    "command" : [
       "rustup target add x86_64-unknown-linux-musl",
-      "git clone https://github.com/kata-containers/kata-containers.git",
+      "git clone https://github.com/kata-containers/kata-containers.git -4",
       "cd  kata-containers/src/agent",
       "git checkout 051dabb0fef2a85e329cb5d7f61d34716d9549b2",
       "cargo fetch",
-      "dettrace --base-env host -- make"
+      "dettrace  --debug 4  --print-statistics --log-file kata.log --base-env host -- make"
    ],
    "config" : {
       "version_gf" : "0.1"
@@ -21,7 +21,7 @@
    "dependency" : [
       {
          "source_dep" : "curl",
-         "version_dep" : "7.58.0-2ubuntu3.19"
+         "version_dep" : "7.58.0-2ubuntu3.20"
       },
       {
          "source_dep" : "gcc",
@@ -29,7 +29,7 @@
       },
       {
          "source_dep" : "git",
-         "version_dep" : "1:2.17.1-1ubuntu0.12"
+         "version_dep" : "1:2.17.1-1ubuntu0.13"
       },
       {
          "source_dep" : "libseccomp-dev",

@@ -1,0 +1,155 @@
+GNU gdb (Ubuntu 8.1.1-0ubuntu1) 8.1.1
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ./a.out...done.
+(gdb) sourcesource       hello.py 
+Breakpoint 1 at 0x9b7: file a.cpp, line 11.
+Breakpoint 2 at 0x90e: file a.cpp, line 4.
+Breakpoint 3 at 0x978: file a.cpp, line 11.
+Breakpoint 4 at 0x8c0
+Function "__do_global_dtors_aux_fini_array_entry" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) n
+Function "__frame_dummy_init_array_entry" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) n
+Function "__init_array_end" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) n
+Function "__init_array_start" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) n
+Breakpoint 5 at 0xa40
+Breakpoint 6 at 0x9d0
+Breakpoint 7 at 0xa44
+Breakpoint 8 at 0x778
+Breakpoint 9 at 0x800
+Breakpoint 10 at 0x830
+Breakpoint 11 at 0x904
+Breakpoint 12 at 0x93d: file a.cpp, line 10.
+Breakpoint 13 at 0x870
+
+Breakpoint 8, _init (argc=1, argv=0x7fffffffe6d8, envp=0x7fffffffe6e8) at ../csu/init-first.c:52
+52	../csu/init-first.c: No such file or directory.
+#0  _init (argc=1, argv=0x7fffffffe6d8, envp=0x7fffffffe6e8) at ../csu/init-first.c:52
+#1  0x00007ffff7de388c in call_init (env=0x7fffffffe6e8, argv=0x7fffffffe6d8, argc=1, l=0x7ffff7ff3000) at dl-init.c:58
+#2  _dl_init (main_map=0x7ffff7ffe170, argc=1, argv=0x7fffffffe6d8, env=0x7fffffffe6e8) at dl-init.c:119
+#3  0x00007ffff7dd40ca in _dl_start_user () from /lib64/ld-linux-x86-64.so.2
+#4  0x0000000000000001 in ?? ()
+#5  0x00007fffffffe8c5 in ?? ()
+#6  0x0000000000000000 in ?? ()
+
+Breakpoint 11, 0x00007ffff72c6d14 in frame_dummy () from /lib/x86_64-linux-gnu/libm.so.6
+#0  0x00007ffff72c6d14 in frame_dummy () from /lib/x86_64-linux-gnu/libm.so.6
+#1  0x00007ffff7de38d3 in call_init (env=0x7fffffffe6e8, argv=0x7fffffffe6d8, argc=1, l=<optimized out>) at dl-init.c:72
+#2  _dl_init (main_map=0x7ffff7ffe170, argc=1, argv=0x7fffffffe6d8, env=0x7fffffffe6e8) at dl-init.c:119
+#3  0x00007ffff7dd40ca in _dl_start_user () from /lib64/ld-linux-x86-64.so.2
+#4  0x0000000000000001 in ?? ()
+#5  0x00007fffffffe8c5 in ?? ()
+#6  0x0000000000000000 in ?? ()
+
+Breakpoint 13, 0x00007ffff72c6c80 in register_tm_clones () from /lib/x86_64-linux-gnu/libm.so.6
+#0  0x00007ffff72c6c80 in register_tm_clones () from /lib/x86_64-linux-gnu/libm.so.6
+#1  0x00007ffff7de38d3 in call_init (env=0x7fffffffe6e8, argv=0x7fffffffe6d8, argc=1, l=<optimized out>) at dl-init.c:72
+#2  _dl_init (main_map=0x7ffff7ffe170, argc=1, argv=0x7fffffffe6d8, env=0x7fffffffe6e8) at dl-init.c:119
+#3  0x00007ffff7dd40ca in _dl_start_user () from /lib64/ld-linux-x86-64.so.2
+#4  0x0000000000000001 in ?? ()
+#5  0x00007fffffffe8c5 in ?? ()
+#6  0x0000000000000000 in ?? ()
+
+Breakpoint 9, 0x0000555555400800 in _start ()
+#0  0x0000555555400800 in _start ()
+
+Breakpoint 6, 0x00005555554009d0 in __libc_csu_init ()
+#0  0x00005555554009d0 in __libc_csu_init ()
+#1  0x00007ffff767ac18 in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=0x5555554009d0 <__libc_csu_init>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:266
+#2  0x000055555540082a in _start ()
+
+Breakpoint 8, 0x0000555555400778 in _init ()
+#0  0x0000555555400778 in _init ()
+#1  0x0000555555400a01 in __libc_csu_init ()
+#2  0x00007ffff767ac18 in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=0x5555554009d0 <__libc_csu_init>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:266
+#3  0x000055555540082a in _start ()
+
+Breakpoint 11, 0x0000555555400904 in frame_dummy ()
+#0  0x0000555555400904 in frame_dummy ()
+#1  0x0000555555400a1d in __libc_csu_init ()
+#2  0x00007ffff767ac18 in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=0x5555554009d0 <__libc_csu_init>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:266
+#3  0x000055555540082a in _start ()
+
+Breakpoint 13, 0x0000555555400870 in register_tm_clones ()
+#0  0x0000555555400870 in register_tm_clones ()
+#1  0x0000555555400a1d in __libc_csu_init ()
+#2  0x00007ffff767ac18 in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=0x5555554009d0 <__libc_csu_init>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:266
+#3  0x000055555540082a in _start ()
+
+Breakpoint 1, _GLOBAL__sub_I__Z3funv () at a.cpp:11
+11	}
+#0  _GLOBAL__sub_I__Z3funv () at a.cpp:11
+#1  0x0000555555400a1d in __libc_csu_init ()
+#2  0x00007ffff767ac18 in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=0x5555554009d0 <__libc_csu_init>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:266
+#3  0x000055555540082a in _start ()
+
+Breakpoint 3, __static_initialization_and_destruction_0 (__initialize_p=1, __priority=65535) at a.cpp:11
+11	}
+#0  __static_initialization_and_destruction_0 (__initialize_p=1, __priority=65535) at a.cpp:11
+#1  0x00005555554009c6 in _GLOBAL__sub_I__Z3funv () at a.cpp:11
+#2  0x0000555555400a1d in __libc_csu_init ()
+#3  0x00007ffff767ac18 in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=0x5555554009d0 <__libc_csu_init>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:266
+#4  0x000055555540082a in _start ()
+
+Breakpoint 12, main () at a.cpp:10
+10		std::cout<<&main<<std::endl;
+#0  main () at a.cpp:10
+1
+
+Breakpoint 4, 0x00005555554008c0 in __do_global_dtors_aux ()
+#0  0x00005555554008c0 in __do_global_dtors_aux ()
+#1  0x00007ffff7de3d13 in _dl_fini () at dl-fini.c:138
+#2  0x00007ffff769c031 in __run_exit_handlers (status=0, listp=0x7ffff7a44718 <__exit_funcs>, run_list_atexit=run_list_atexit@entry=true, run_dtors=run_dtors@entry=true) at exit.c:108
+#3  0x00007ffff769c12a in __GI_exit (status=<optimized out>) at exit.c:139
+#4  0x00007ffff767ac8e in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:344
+#5  0x000055555540082a in _start ()
+
+Breakpoint 10, 0x0000555555400830 in deregister_tm_clones ()
+#0  0x0000555555400830 in deregister_tm_clones ()
+#1  0x00005555554008e8 in __do_global_dtors_aux ()
+#2  0x00007fffffffe590 in ?? ()
+#3  0x00007ffff7de3d13 in _dl_fini () at dl-fini.c:138
+Backtrace stopped: frame did not save the PC
+
+Breakpoint 7, 0x0000555555400a44 in _fini ()
+#0  0x0000555555400a44 in _fini ()
+#1  0x00007ffff7de3d33 in _dl_fini () at dl-fini.c:143
+#2  0x00007ffff769c031 in __run_exit_handlers (status=0, listp=0x7ffff7a44718 <__exit_funcs>, run_list_atexit=run_list_atexit@entry=true, run_dtors=run_dtors@entry=true) at exit.c:108
+#3  0x00007ffff769c12a in __GI_exit (status=<optimized out>) at exit.c:139
+#4  0x00007ffff767ac8e in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:344
+#5  0x000055555540082a in _start ()
+
+Breakpoint 4, 0x00007ffff72c6cd0 in __do_global_dtors_aux () from /lib/x86_64-linux-gnu/libm.so.6
+#0  0x00007ffff72c6cd0 in __do_global_dtors_aux () from /lib/x86_64-linux-gnu/libm.so.6
+#1  0x00007ffff7de3d13 in _dl_fini () at dl-fini.c:138
+#2  0x00007ffff769c031 in __run_exit_handlers (status=0, listp=0x7ffff7a44718 <__exit_funcs>, run_list_atexit=run_list_atexit@entry=true, run_dtors=run_dtors@entry=true) at exit.c:108
+#3  0x00007ffff769c12a in __GI_exit (status=<optimized out>) at exit.c:139
+#4  0x00007ffff767ac8e in __libc_start_main (main=0x555555400939 <main()>, argc=1, argv=0x7fffffffe6d8, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffe6c8) at ../csu/libc-start.c:344
+#5  0x000055555540082a in _start ()
+
+Breakpoint 10, 0x00007ffff72c6c40 in deregister_tm_clones () from /lib/x86_64-linux-gnu/libm.so.6
+#0  0x00007ffff72c6c40 in deregister_tm_clones () from /lib/x86_64-linux-gnu/libm.so.6
+#1  0x00007ffff72c6cf8 in __do_global_dtors_aux () from /lib/x86_64-linux-gnu/libm.so.6
+#2  0x00007fffffffe590 in ?? ()
+#3  0x00007ffff7de3d13 in _dl_fini () at dl-fini.c:138
+Backtrace stopped: frame did not save the PC
+[Inferior 1 (process 9622) exited normally]
+Traceback (most recent call last):
+  File "hello.py", line 13, in <module>
+    gdb.execute("bt");
+gdb.error: No stack.
+(gdb) n q

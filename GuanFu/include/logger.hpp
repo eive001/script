@@ -19,6 +19,7 @@ enum class Importance {
   inter, /*< We intercepted this system call */
   info, /*< Less important information */
   extra, /*< Extra information not useful most of the time. */
+  debug,
 };
 
 /**
@@ -28,6 +29,7 @@ enum class Color {
   green,
   red,
   blue,
+  yellow,
 };
 
 /**

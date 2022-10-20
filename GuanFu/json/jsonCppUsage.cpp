@@ -33,7 +33,7 @@ using std::vector;
     
     if(!read_file.is_open())
     {
-        cerr<<"failure to open json file!"<<endl;
+        cerr<<"failure to open json file in ./mount/old.guanfu  !"<<endl;
         return false;
     }
 
@@ -140,7 +140,7 @@ using std::vector;
 
         if(!read_checksum.is_open())
         {
-            cerr<<"failure to open check faile file!"<<endl;
+            cerr<<"failure to open check  file!"<<endl;
             return false;
         }
 
@@ -160,7 +160,7 @@ using std::vector;
         map_property["sha256sum"] = checksum_result[2];
     
         
-
+        read_checksum.close();
         cout<<"shasum is  "<<map_property["shasum"]<<endl;
         cout<<"sha256sum is  "<<map_property["sha256sum"]<<endl;
         cout<<"md5sum is  "<<map_property["md5sum"]<<endl;
